@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('fecha_nacimiento');
             $table->string('telefono')->nullable();
             $table->string('correo')->unique()->nullable();
-            $table->string('direccion')->nullable();
+            $table->foreignId('id_direccion')->constrained('direcciones')->onDelete('cascade');
             $table->timestamps();
         });
     }
