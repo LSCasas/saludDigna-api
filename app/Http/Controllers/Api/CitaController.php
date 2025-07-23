@@ -4,46 +4,105 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Cita;
+use Illuminate\Support\Facades\Validator;
 
 class CitaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar todas las citas
      */
     public function index()
     {
-        //
+        $citas = Cita::with('paciente')->get(); // Incluye información del paciente
+        return response()->json($citas);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guardar una nueva cita
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_paciente' => 'required|exists:pacientes,id_paciente',
+            'fecha_cita' => 'required|date',
+            'hora_cita' => 'required',
+            'motivo' => 'required|string|max:255',
+            'estado' => 'nullable|string|max:50',
+            'nota' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $cita = Cita::create($request->all());
+
+        return response()->json([
+            'message' => 'Cita creada exitosamente',
+            'cita' => $cita
+        ], 201);
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar una cita específica
      */
     public function show(string $id)
     {
-        //
+        $cita = Cita::with('paciente')->find($id);
+
+        if (!$cita) {
+            return response()->json(['message' => 'Cita no encontrada'], 404);
+        }
+
+        return response()->json($cita);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar una cita
      */
     public function update(Request $request, string $id)
     {
-        //
+        $cita = Cita::find($id);
+
+        if (!$cita) {
+            return response()->json(['message' => 'Cita no encontrada'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'id_paciente' => 'sometimes|exists:pacientes,id_paciente',
+            'fecha_cita' => 'sometimes|date',
+            'hora_cita' => 'sometimes',
+            'motivo' => 'sometimes|string|max:255',
+            'estado' => 'nullable|string|max:50',
+            'nota' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $cita->update($request->all());
+
+        return response()->json([
+            'message' => 'Cita actualizada exitosamente',
+            'cita' => $cita
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar una cita
      */
     public function destroy(string $id)
     {
-        //
+        $cita = Cita::find($id);
+
+        if (!$cita) {
+            return response()->json(['message' => 'Cita no encontrada'], 404);
+        }
+
+        $cita->delete();
+
+        return response()->json(['message' => 'Cita eliminada exitosamente']);
     }
 }
