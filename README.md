@@ -1,61 +1,157 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# saludDigna API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Una API construida con Laravel para la gestión de citas médicas, pacientes, direcciones y recetas. Incluye autenticación básica para proteger los endpoints y asegurar que solo usuarios autenticados puedan acceder a ciertos recursos.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tabla de Contenidos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   [Estructura del Proyecto](#estructura-del-proyecto)
+-   [Características](#características)
+-   [Instalación](#instalación)
+-   [Uso](#uso)
+-   [Requisitos](#requisitos)
+-   [Más Información](#más-información)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Estructura del Proyecto
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```
+saludDigna-api/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   └── Api/
+│   │   │       ├── AuthController.php
+│   │   │       ├── CitaController.php
+│   │   │       ├── DireccionController.php
+│   │   │       ├── PacienteController.php
+│   │   │       └── RecetaController.php
+│   │   ├── Middleware/
+│   │   └── Kernel.php
+│   ├── Models/
+│   │   ├── Cita.php
+│   │   ├── Direccion.php
+│   │   ├── Paciente.php
+│   │   ├── Receta.php
+│   │   └── User.php
+├── config/
+├── database/
+├── public/
+├── routes/
+│   └── api.php
+├── storage/
+├── tests/
+├── artisan
+├── composer.json
+└── package.json
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Características
 
-## Laravel Sponsors
+-   Registro, inicio y cierre de sesión de usuarios (Autenticación con Sanctum)
+-   CRUD para citas, pacientes, direcciones y recetas
+-   Middleware para proteger rutas y garantizar acceso solo a usuarios autenticados
+-   Validaciones en las peticiones HTTP
+-   Relaciones entre modelos (ejemplo: cita con paciente)
+-   API RESTful con rutas limpias y organizadas
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Instalación
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. Clonar el repositorio:
 
-## Contributing
+```bash
+git clone git@github.com:LSCasas/saludDigna-api.git
+cd saludDigna-api
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. Instalar dependencias de PHP:
 
-## Code of Conduct
+```bash
+composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3. Copiar y configurar archivo de entorno:
 
-## Security Vulnerabilities
+```bash
+cp .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Configurar las variables de entorno, especialmente la conexión a la base de datos.
 
-## License
+4. Generar clave de aplicación:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan key:generate
+```
+
+5. Ejecutar migraciones para crear tablas en la base de datos:
+
+```bash
+php artisan migrate
+```
+
+6. (Opcional) Ejecutar seeders si existen para datos de prueba:
+
+```bash
+php artisan db:seed
+```
+
+7. Levantar el servidor de desarrollo:
+
+```bash
+php artisan serve
+```
+
+---
+
+## Uso
+
+La API se consume mediante llamadas HTTP a los endpoints definidos en `routes/api.php`. Se requiere autenticación para acceder a las rutas protegidas.
+
+Para registrarse, usar el endpoint POST `/api/register` con:
+
+```json
+{
+    "name": "Tu Nombre",
+    "email": "tu.email@example.com",
+    "password": "tu_contraseña"
+}
+```
+
+Para iniciar sesión, usar POST `/api/login` con:
+
+```json
+{
+    "email": "tu.email@example.com",
+    "password": "tu_contraseña"
+}
+```
+
+Una vez autenticado, se debe enviar el token de autenticación (Bearer Token) en el header `Authorization` para acceder a rutas protegidas.
+
+---
+
+## Requisitos
+
+-   PHP 8.x o superior
+-   Laravel 10.x
+-   Composer
+-   Base de datos compatible (MySQL, PostgreSQL, SQLite, etc.)
+-   Laravel Sanctum para autenticación de API
+
+---
+
+## Más Información
+
+-   [Documentación Laravel](https://laravel.com/docs)
+-   [Laravel Sanctum](https://laravel.com/docs/sanctum)
+-   [Eloquent ORM](https://laravel.com/docs/eloquent)
+-   [API Resources](https://laravel.com/docs/eloquent-resources)
+
+---
