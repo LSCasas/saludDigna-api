@@ -4,46 +4,109 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Receta;
+use Illuminate\Support\Facades\Validator;
 
 class RecetaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Listar todas las recetas.
      */
     public function index()
     {
-        //
+        $recetas = Receta::with('paciente')->get();
+        return response()->json($recetas, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guardar una nueva receta.
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_paciente' => 'required|integer|exists:pacientes,id_paciente',
+            'fecha_receta' => 'required|date',
+            'diagnostico' => 'required|string',
+            'tension_arterial' => 'nullable|string',
+            'frecuencia_cardiaca' => 'nullable|string',
+            'frecuencia_respiratoria' => 'nullable|string',
+            'temperatura' => 'nullable|string',
+            'peso' => 'nullable|string',
+            'talla' => 'nullable|string',
+            'edad' => 'nullable|integer',
+            'alergia' => 'nullable|string',
+
+            'indicaciones' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $receta = Receta::create($validator->validated());
+        return response()->json($receta, 201);
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar una receta específica.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $receta = Receta::with('paciente')->find($id);
+
+        if (!$receta) {
+            return response()->json(['message' => 'Receta no encontrada'], 404);
+        }
+
+        return response()->json($receta, 200);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar una receta.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $receta = Receta::find($id);
+        if (!$receta) {
+            return response()->json(['message' => 'Receta no encontrada'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'id_paciente' => 'sometimes|integer|exists:pacientes,id_paciente',
+            'fecha_receta' => 'sometimes|date',
+            'diagnostico' => 'sometimes|string',
+            'tension_arterial' => 'nullable|string',
+            'frecuencia_cardiaca' => 'nullable|string',
+            'frecuencia_respiratoria' => 'nullable|string',
+            'temperatura' => 'nullable|string',
+            'peso' => 'nullable|string',
+            'talla' => 'nullable|string',
+            'edad' => 'nullable|integer',
+            'alergia' => 'nullable|string',
+
+            'indicaciones' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $receta->update($validator->validated());
+        return response()->json($receta, 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar una receta.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $receta = Receta::find($id);
+
+        if (!$receta) {
+            return response()->json(['message' => 'Receta no encontrada'], 404);
+        }
+
+        $receta->delete();
+        return response()->json(['message' => 'Receta eliminada correctamente'], 200);
     }
 }

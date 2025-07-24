@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Receta extends Model
 {
+    protected $table = 'recetas';
     protected $primaryKey = 'id_receta';
     protected $fillable = [
         'id_paciente',
@@ -19,9 +20,10 @@ class Receta extends Model
         'talla',
         'edad',
         'alergia',
-        'identificador',
+
         'indicaciones'
     ];
+    public $timestamps = true;
 
     public function paciente()
     {
