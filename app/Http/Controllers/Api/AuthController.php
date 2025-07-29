@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -39,32 +40,33 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
 
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Las credenciales no son correctas.'],
-            ]);
+            return response()->json(['message' => 'Credenciales incorrectas'], 401);
         }
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        Auth::login($user);
 
         return response()->json([
             'message' => 'Inicio de sesión exitoso',
-            'token' => $token
         ]);
     }
+
+
 
     /**
      * Logout (elimina todos los tokens)
      */
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json([
             'message' => 'Sesión cerrada correctamente'

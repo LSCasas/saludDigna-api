@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\PacienteController;
 use App\Http\Controllers\Api\CitaController;
 use App\Http\Controllers\Api\RecetaController;
 
+
+
 /**
  * Rutas públicas
  */
