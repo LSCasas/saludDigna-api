@@ -74,14 +74,19 @@ class PacienteController extends Controller
         }
 
         try {
+            $request->merge([
+                'telefono' => $request->telefono ?: null,
+                'correo' => $request->correo ?: null,
+            ]);
+
             $validated = $request->validate([
                 'nombre' => 'sometimes|string|max:255',
                 'apellidoP' => 'sometimes|string|max:255',
                 'apellidoM' => 'sometimes|string|max:255',
                 'genero' => 'sometimes|in:M,F,O',
                 'fecha_nacimiento' => 'sometimes|date',
-                'telefono' => 'sometimes|string|max:20',
-                'correo' => 'sometimes|email|max:255',
+                'telefono' => 'nullable|string|max:20',
+                'correo' => 'nullable|email|max:255',
                 'id_direccion' => 'sometimes|exists:direcciones,id_direccion'
             ]);
 
