@@ -17,7 +17,8 @@ class Paciente extends Model
         'fecha_nacimiento',
         'telefono',
         'correo',
-        'id_direccion'
+        'id_direccion',
+        'estado'
     ];
 
     public function direccion()

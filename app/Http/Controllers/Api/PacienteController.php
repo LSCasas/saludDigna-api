@@ -85,7 +85,7 @@ class PacienteController extends Controller
                 'apellidoM' => 'sometimes|string|max:255',
                 'genero' => 'sometimes|in:M,F,O',
                 'fecha_nacimiento' => 'sometimes|date',
-                'estado' => 'sometimes|string|in:activo,inactivo',
+                'estado' => 'sometimes|string|max:255',
                 'telefono' => 'nullable|string|max:20',
                 'correo' => 'nullable|email|max:255',
                 'id_direccion' => 'sometimes|exists:direcciones,id_direccion'
