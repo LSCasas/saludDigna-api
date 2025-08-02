@@ -104,6 +104,25 @@ class PacienteController extends Controller
         }
     }
 
+    /**
+     * Contar pacientes activos.
+     */
+    public function countActivePatients()
+    {
+        $count = Paciente::where('estado', 'activo')->count();
+        return response()->json(['activos' => $count]);
+    }
+
+    /**
+     * Contar pacientes inactivos.
+     */
+    public function countInactivePatients()
+    {
+        $count = Paciente::where('estado', 'inactivo')->count();
+        return response()->json(['inactivos' => $count]);
+    }
+
+
 
     /**
      * Eliminar un paciente.

@@ -20,6 +20,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware(['web', 'auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::get('/pacientes/activos/count', [PacienteController::class, 'countActivePatients']);
+    Route::get('/pacientes/inactivos/count', [PacienteController::class, 'countInactivePatients']);
+
     Route::apiResource('direcciones', DireccionController::class);
     Route::apiResource('pacientes', PacienteController::class);
     Route::apiResource('citas', CitaController::class);
