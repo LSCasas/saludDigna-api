@@ -139,4 +139,48 @@ class RecetaController extends Controller
             'paciente' => $receta->paciente
         ], 200);
     }
+
+
+    /**
+     * Obtener todas las recetas de un paciente por su ID, incluyendo nombre, apellidoP y apellidoM.
+     */
+    public function getRecetasPorPaciente($id_paciente)
+    {
+        // Obtener todas las recetas junto con los datos del paciente
+        $recetas = Receta::with('paciente')
+            ->where('id_paciente', $id_paciente)
+            ->get();
+
+        if ($recetas->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron recetas para este paciente'], 404);
+        }
+
+        // Obtener nombre del paciente (solo una vez, ya que es el mismo para todas las recetas)
+        $paciente = $recetas->first()->paciente;
+
+        return response()->json([
+            'paciente' => [
+                'id_paciente' => $paciente->id_paciente,
+                'nombre' => $paciente->nombre,
+                'apellidoP' => $paciente->apellidoP ?? '',
+                'apellidoM' => $paciente->apellidoM ?? '',
+            ],
+            'recetas' => $recetas->map(function ($receta) {
+                return [
+                    'id_receta' => $receta->id_receta,
+                    'fecha_receta' => $receta->fecha_receta,
+                    'diagnostico' => $receta->diagnostico,
+                    'tension_arterial' => $receta->tension_arterial,
+                    'frecuencia_cardiaca' => $receta->frecuencia_cardiaca,
+                    'frecuencia_respiratoria' => $receta->frecuencia_respiratoria,
+                    'temperatura' => $receta->temperatura,
+                    'peso' => $receta->peso,
+                    'talla' => $receta->talla,
+                    'edad' => $receta->edad,
+                    'alergia' => $receta->alergia,
+                    'indicaciones' => $receta->indicaciones,
+                ];
+            }),
+        ], 200);
+    }
 }
