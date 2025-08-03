@@ -109,4 +109,34 @@ class RecetaController extends Controller
         $receta->delete();
         return response()->json(['message' => 'Receta eliminada correctamente'], 200);
     }
+
+    /**
+     * Renderizar datos combinados de una receta y su paciente.
+     */
+    public function showRecetaWithPacienteData($id)
+    {
+        $receta = Receta::with('paciente')->find($id);
+
+        if (!$receta) {
+            return response()->json(['message' => 'Receta no encontrada'], 404);
+        }
+
+        return response()->json([
+            'receta' => [
+                'id' => $receta->id_receta,
+                'fecha_receta' => $receta->fecha_receta,
+                'diagnostico' => $receta->diagnostico,
+                'tension_arterial' => $receta->tension_arterial,
+                'frecuencia_cardiaca' => $receta->frecuencia_cardiaca,
+                'frecuencia_respiratoria' => $receta->frecuencia_respiratoria,
+                'temperatura' => $receta->temperatura,
+                'peso' => $receta->peso,
+                'talla' => $receta->talla,
+                'edad' => $receta->edad,
+                'alergia' => $receta->alergia,
+                'indicaciones' => $receta->indicaciones,
+            ],
+            'paciente' => $receta->paciente
+        ], 200);
+    }
 }

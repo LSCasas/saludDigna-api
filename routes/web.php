@@ -27,4 +27,5 @@ Route::middleware(['web', 'auth:sanctum'])->group(function () {
     Route::apiResource('pacientes', PacienteController::class);
     Route::apiResource('citas', CitaController::class);
     Route::apiResource('recetas', RecetaController::class);
+    Route::get('/recetas/{id}/completa', [RecetaController::class, 'showRecetaWithPacienteData']);
 });

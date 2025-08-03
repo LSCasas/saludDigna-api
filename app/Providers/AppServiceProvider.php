@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::middleware('api')
-            ->group(base_path('routes/api.php'));
+            ->group(base_path('routes/web.php'));
     }
 
     protected function mapWebRoutes()
