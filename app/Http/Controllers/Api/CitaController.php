@@ -105,4 +105,16 @@ class CitaController extends Controller
 
         return response()->json(['message' => 'Cita eliminada exitosamente']);
     }
+
+    /**
+     * Mostrar todas las citas con datos limitados del paciente
+     */
+    public function citaConPaciente()
+    {
+        $citas = Cita::with(['paciente' => function ($query) {
+            $query->select('id_paciente', 'nombre', 'apellidoP', 'apellidoM');
+        }])->get();
+
+        return response()->json($citas);
+    }
 }
