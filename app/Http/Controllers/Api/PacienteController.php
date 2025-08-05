@@ -139,4 +139,43 @@ class PacienteController extends Controller
 
         return response()->json(['message' => 'Paciente eliminado correctamente']);
     }
+
+    public function pacientesConUltimosDatos()
+    {
+        $pacientes = Paciente::select(
+            'id_paciente',
+            'nombre',
+            'apellidoP',
+            'apellidoM',
+            'created_at',
+            'estado',
+            'genero',
+            'fecha_nacimiento'
+        )
+            ->with([
+                'citas' => function ($query) {
+                    $query->latest('created_at')->limit(1);
+                },
+                'recetas' => function ($query) {
+                    $query->latest('created_at')->limit(1);
+                }
+            ])
+            ->get()
+            ->map(function ($paciente) {
+                return [
+                    'id_paciente' => $paciente->id_paciente,
+                    'nombre' => $paciente->nombre,
+                    'apellidoP' => $paciente->apellidoP,
+                    'apellidoM' => $paciente->apellidoM,
+                    'estado' => $paciente->estado,
+                    'created_at' => $paciente->created_at,
+                    'genero' => $paciente->genero,
+                    'fecha_nacimiento' => $paciente->fecha_nacimiento,
+                    'ultima_cita' => optional($paciente->citas->first())->created_at,
+                    'ultima_receta' => optional($paciente->recetas->first())->created_at,
+                ];
+            });
+
+        return response()->json($pacientes);
+    }
 }
