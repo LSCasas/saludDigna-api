@@ -72,4 +72,22 @@ class AuthController extends Controller
             'message' => 'Sesión cerrada correctamente'
         ]);
     }
+
+    /**
+     * Verifica si el usuario está autenticado y devuelve sus datos
+     */
+    public function me(Request $request)
+    {
+        if (Auth::check()) {
+            return response()->json([
+                'authenticated' => true,
+                'user' => Auth::user()
+            ]);
+        }
+
+        return response()->json([
+            'authenticated' => false,
+            'message' => 'Usuario no autenticado'
+        ], 401);
+    }
 }
