@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('estado')->default('activo');
             $table->string('telefono')->nullable();
             $table->string('correo')->unique()->nullable();
-            $table->foreignId('id_direccion')->nullable()->references('id_direccion')->on('direcciones')->onDelete('restrict');
+            $table->string('domicilio')->nullable();
             $table->timestamps();
         });
     }

@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\DireccionController;
 use App\Http\Controllers\Api\PacienteController;
 use App\Http\Controllers\Api\CitaController;
 use App\Http\Controllers\Api\RecetaController;
@@ -23,7 +22,6 @@ Route::middleware(['web', 'auth:sanctum'])->group(function () {
     Route::get('/pacientes/activos/count', [PacienteController::class, 'countActivePatients']);
     Route::get('/pacientes/inactivos/count', [PacienteController::class, 'countInactivePatients']);
 
-    Route::apiResource('direcciones', DireccionController::class);
     Route::apiResource('pacientes', PacienteController::class);
     Route::apiResource('citas', CitaController::class);
     Route::apiResource('recetas', RecetaController::class);

@@ -17,14 +17,11 @@ class Paciente extends Model
         'fecha_nacimiento',
         'telefono',
         'correo',
-        'id_direccion',
-        'estado'
+        'estado',
+        'domicilio'
     ];
 
-    public function direccion()
-    {
-        return $this->belongsTo(Direccion::class, 'id_direccion');
-    }
+
 
     public function citas()
     {

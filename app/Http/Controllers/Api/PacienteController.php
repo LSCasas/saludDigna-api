@@ -14,7 +14,7 @@ class PacienteController extends Controller
      */
     public function index()
     {
-        $pacientes = Paciente::with('direccion')->get();
+        $pacientes = Paciente::all();
         return response()->json($pacientes);
     }
 
@@ -32,7 +32,7 @@ class PacienteController extends Controller
                 'fecha_nacimiento' => 'required|date',
                 'telefono' => 'nullable|string|max:20',
                 'correo' => 'nullable|email|max:255',
-                'id_direccion' => 'nullable|exists:direcciones,id_direccion'
+                'domicilio' => 'nullable|string|max:100',
             ]);
 
             $paciente = Paciente::create($validated);
@@ -53,7 +53,7 @@ class PacienteController extends Controller
      */
     public function show(string $id)
     {
-        $paciente = Paciente::with(['direccion', 'citas', 'recetas'])->find($id);
+        $paciente = Paciente::with(['citas', 'recetas'])->find($id);
 
         if (!$paciente) {
             return response()->json(['message' => 'Paciente no encontrado'], 404);
@@ -77,6 +77,7 @@ class PacienteController extends Controller
             $request->merge([
                 'telefono' => $request->telefono ?: null,
                 'correo' => $request->correo ?: null,
+                'domicilio' => $request->domicilio ?: null,
             ]);
 
             $validated = $request->validate([
@@ -88,7 +89,7 @@ class PacienteController extends Controller
                 'estado' => 'sometimes|string|max:255',
                 'telefono' => 'nullable|string|max:20',
                 'correo' => 'nullable|email|max:255',
-                'id_direccion' => 'sometimes|exists:direcciones,id_direccion'
+                'domicilio' => 'nullable|string|max:100',
             ]);
 
             $paciente->update($validated);
