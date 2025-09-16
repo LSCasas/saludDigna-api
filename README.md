@@ -1,21 +1,21 @@
-# saludDigna API
+# SaludDigna API
 
-Una API construida con Laravel para la gestión de citas médicas, pacientes, direcciones y recetas. Incluye autenticación básica para proteger los endpoints y asegurar que solo usuarios autenticados puedan acceder a ciertos recursos.
-
----
-
-## Tabla de Contenidos
-
--   [Estructura del Proyecto](#estructura-del-proyecto)
--   [Características](#características)
--   [Instalación](#instalación)
--   [Uso](#uso)
--   [Requisitos](#requisitos)
--   [Más Información](#más-información)
+An API built with Laravel for managing medical appointments, patients, addresses, and prescriptions. It includes basic authentication to protect endpoints and ensure that only authenticated users can access specific resources.
 
 ---
 
-## Estructura del Proyecto
+## Table of Contents
+
+-   [Project Structure](#project-structure)
+-   [Features](#features)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Requirements](#requirements)
+-   [Learn More](#learn-more)
+
+---
+
+## Project Structure
 
 ```
 saludDigna-api/
@@ -24,17 +24,17 @@ saludDigna-api/
 │   │   ├── Controllers/
 │   │   │   └── Api/
 │   │   │       ├── AuthController.php
-│   │   │       ├── CitaController.php
-│   │   │       ├── DireccionController.php
-│   │   │       ├── PacienteController.php
-│   │   │       └── RecetaController.php
+│   │   │       ├── AppointmentController.php
+│   │   │       ├── AddressController.php
+│   │   │       ├── PatientController.php
+│   │   │       └── PrescriptionController.php
 │   │   ├── Middleware/
 │   │   └── Kernel.php
 │   ├── Models/
-│   │   ├── Cita.php
-│   │   ├── Direccion.php
-│   │   ├── Paciente.php
-│   │   ├── Receta.php
+│   │   ├── Appointment.php
+│   │   ├── Address.php
+│   │   ├── Patient.php
+│   │   ├── Prescription.php
 │   │   └── User.php
 ├── config/
 ├── database/
@@ -50,59 +50,59 @@ saludDigna-api/
 
 ---
 
-## Características
+## Features
 
--   Registro, inicio y cierre de sesión de usuarios (Autenticación con Sanctum)
--   CRUD para citas, pacientes, direcciones y recetas
--   Middleware para proteger rutas y garantizar acceso solo a usuarios autenticados
--   Validaciones en las peticiones HTTP
--   Relaciones entre modelos (ejemplo: cita con paciente)
--   API RESTful con rutas limpias y organizadas
+-   User registration, login, and logout (Authentication with Sanctum)
+-   CRUD operations for appointments, patients, addresses, and prescriptions
+-   Middleware to protect routes and ensure access only to authenticated users
+-   HTTP request validations
+-   Model relationships (e.g., appointment linked to a patient)
+-   RESTful API with clean and organized routes
 
 ---
 
-## Instalación
+## Installation
 
-1. Clonar el repositorio:
+1. Clone the repository:
 
 ```bash
 git clone git@github.com:LSCasas/saludDigna-api.git
 cd saludDigna-api
 ```
 
-2. Instalar dependencias de PHP:
+2. Install PHP dependencies:
 
 ```bash
 composer install
 ```
 
-3. Copiar y configurar archivo de entorno:
+3. Copy and configure the environment file:
 
 ```bash
 cp .env.example .env
 ```
 
-Configurar las variables de entorno, especialmente la conexión a la base de datos.
+Configure the environment variables, especially the database connection.
 
-4. Generar clave de aplicación:
+4. Generate the application key:
 
 ```bash
 php artisan key:generate
 ```
 
-5. Ejecutar migraciones para crear tablas en la base de datos:
+5. Run migrations to create database tables:
 
 ```bash
 php artisan migrate
 ```
 
-6. (Opcional) Ejecutar seeders si existen para datos de prueba:
+6. (Optional) Run seeders if available for test data:
 
 ```bash
 php artisan db:seed
 ```
 
-7. Levantar el servidor de desarrollo:
+7. Start the development server:
 
 ```bash
 php artisan serve
@@ -110,48 +110,46 @@ php artisan serve
 
 ---
 
-## Uso
+## Usage
 
-La API se consume mediante llamadas HTTP a los endpoints definidos en `routes/api.php`. Se requiere autenticación para acceder a las rutas protegidas.
+The API is consumed via HTTP requests to the endpoints defined in `routes/api.php`. Authentication is required to access protected routes.
 
-Para registrarse, usar el endpoint POST `/api/register` con:
-
-```json
-{
-    "name": "Tu Nombre",
-    "email": "tu.email@example.com",
-    "password": "tu_contraseña"
-}
-```
-
-Para iniciar sesión, usar POST `/api/login` con:
+To register, use the POST endpoint `/api/register` with:
 
 ```json
 {
-    "email": "tu.email@example.com",
-    "password": "tu_contraseña"
+    "name": "Your Name",
+    "email": "your.email@example.com",
+    "password": "your_password"
 }
 ```
 
-Una vez autenticado, se debe enviar el token de autenticación (Bearer Token) en el header `Authorization` para acceder a rutas protegidas.
+To log in, use the POST endpoint `/api/login` with:
+
+```json
+{
+    "email": "your.email@example.com",
+    "password": "your_password"
+}
+```
+
+Once authenticated, send the authentication token (Bearer Token) in the `Authorization` header to access protected routes.
 
 ---
 
-## Requisitos
+## Requirements
 
--   PHP 8.x o superior
+-   PHP 8.x or higher
 -   Laravel 10.x
 -   Composer
--   Base de datos compatible (MySQL, PostgreSQL, SQLite, etc.)
--   Laravel Sanctum para autenticación de API
+-   Compatible database (MySQL, PostgreSQL, SQLite, etc.)
+-   Laravel Sanctum for API authentication
 
 ---
 
-## Más Información
+## Learn More
 
--   [Documentación Laravel](https://laravel.com/docs)
+-   [Laravel Documentation](https://laravel.com/docs)
 -   [Laravel Sanctum](https://laravel.com/docs/sanctum)
 -   [Eloquent ORM](https://laravel.com/docs/eloquent)
 -   [API Resources](https://laravel.com/docs/eloquent-resources)
-
----
