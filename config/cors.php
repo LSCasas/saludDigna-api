@@ -6,7 +6,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173', 'https://por-tu-salud.vercel.app'],
+    'allowed_origins' => ['http://localhost:5173', 'https://por-tu-salud.vercel.app', 'https://portusalud.lscasas.dev'],
 
     'allowed_origins_patterns' => [],
 
