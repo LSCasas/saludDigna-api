@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\PacienteController;
 use App\Http\Controllers\Api\CitaController;
 use App\Http\Controllers\Api\RecetaController;
 
-
 /**
  * Rutas públicas
  */
@@ -16,7 +15,7 @@ Route::post('/login', [AuthController::class, 'login']);
 /**
  * Rutas protegidas
  */
-Route::middleware(['web', 'auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/pacientes/activos/count', [PacienteController::class, 'countActivePatients']);
@@ -25,6 +24,7 @@ Route::middleware(['web', 'auth:sanctum'])->group(function () {
     Route::apiResource('pacientes', PacienteController::class);
     Route::apiResource('citas', CitaController::class);
     Route::apiResource('recetas', RecetaController::class);
+
     Route::get('/recetas/{id}/completa', [RecetaController::class, 'showRecetaWithPacienteData']);
     Route::get('/recetas/paciente/{id_paciente}', [RecetaController::class, 'getRecetasPorPaciente']);
     Route::get('/citasCompletas', [CitaController::class, 'citaConPaciente']);
