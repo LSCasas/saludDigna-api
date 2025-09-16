@@ -7,11 +7,6 @@ use App\Http\Controllers\Api\CitaController;
 use App\Http\Controllers\Api\RecetaController;
 
 
-/**
- * Rutas públicas
- */
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
 
 /**
  * Rutas protegidas
